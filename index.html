@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>V1.8.0</title>
+  <title>V1.8.1 Test Branch</title>
 </head>
 <body>
   <h1>Choose a page to open:</h1>
@@ -13,7 +13,6 @@
 
   <script>
     let mode = "open";   // can be "open" or "cache"
-    let cachedWin = null; // store window when in cache mode
 
     function toggleMode() {
       mode = (mode === "open") ? "cache" : "open";
@@ -21,37 +20,36 @@
     }
 
     function openPage(url) {
-      let win;
+      let win = window.open("about:blank", "_blank");
 
+      // In cache mode, store choice
       if (mode === "cache") {
-        // Reuse cached window if it exists and not closed
-        if (cachedWin && !cachedWin.closed) {
-          win = cachedWin;
-          win.document.body.innerHTML = ""; // clear old iframe
-        } else {
-          cachedWin = window.open("about:blank", "_blank");
-          win = cachedWin;
-        }
-      } else {
-        // Always open a new window
-        win = window.open("about:blank", "_blank");
+        localStorage.setItem("cachedPage", url);
       }
 
-      // Set a temporary title while loading
-      win.document.title = "Loading...";
-
-      // Style the body
-      win.document.body.style.margin = '0';
-      win.document.body.style.height = '100%';
-      win.document.body.style.overflow = 'hidden';
-
-      // Create and append the iframe
-      let iframe = win.document.createElement('iframe');
-      iframe.src = url;
-      iframe.style.border = 'none';
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      win.document.body.appendChild(iframe);
+      // Inject loader script into about:blank
+      let doc = win.document;
+      doc.open();
+      doc.write(`
+        <title>Loading...</title>
+        <style>
+          body { margin:0; height:100%; overflow:hidden; }
+          iframe { border:none; width:100%; height:100%; }
+        </style>
+        <script>
+          // Grab cached URL if in cache mode
+          let url = ${JSON.stringify(url)};
+          try {
+            let cached = localStorage.getItem("cachedPage");
+            if (cached) url = cached;
+          } catch(e){}
+          
+          let iframe = document.createElement("iframe");
+          iframe.src = url;
+          document.body.appendChild(iframe);
+        <\/script>
+      `);
+      doc.close();
     }
   </script>
 </body>
