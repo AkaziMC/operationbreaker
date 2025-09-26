@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>V1.7.1</title>
+  <title>V1.7.2</title>
 </head>
 <body>
   <h1>Choose a page to open:</h1>
@@ -15,21 +15,19 @@
       let win = window.open("about:blank", "_blank");
 
       // Set a temporary title while loading
-      win.document.write('<title>Loading...</title>');
+      win.document.title = "Loading...";
 
-      // Create iframe
+      // Style the body
+      win.document.body.style.margin = '0';
+      win.document.body.style.height = '100%';
+      win.document.body.style.overflow = 'hidden';
+
+      // Create and append the iframe
       let iframe = win.document.createElement('iframe');
       iframe.src = url;
       iframe.style.border = 'none';
       iframe.style.width = '100%';
       iframe.style.height = '100%';
-
-      // Clear body and append iframe
-      win.document.body.innerHTML = '';
-      win.document.body.style.margin = '0';
-      win.document.body.style.padding = '0';
-      win.document.body.style.height = '100%';
-      win.document.body.style.overflow = 'hidden';
       win.document.body.appendChild(iframe);
     }
   </script>
