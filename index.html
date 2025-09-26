@@ -2,17 +2,40 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>V1.7.2</title>
+  <title>V1.8.0</title>
 </head>
 <body>
   <h1>Choose a page to open:</h1>
   <button onclick="openPage('https://akazimc.github.io/operationbreaker/Eaglercraft')">WASM-GC Eaglercraft</button>
   <button onclick="openPage('https://akazimc.github.io/operationbreaker/Eaglercraft-JS')">JS Eaglercraft</button>
+  <br><br>
+  <button onclick="toggleMode()" id="modeBtn">Mode: Open</button>
 
   <script>
+    let mode = "open";   // can be "open" or "cache"
+    let cachedWin = null; // store window when in cache mode
+
+    function toggleMode() {
+      mode = (mode === "open") ? "cache" : "open";
+      document.getElementById("modeBtn").innerText = "Mode: " + (mode === "open" ? "Open" : "Cache");
+    }
+
     function openPage(url) {
-      // Open a new blank window
-      let win = window.open("about:blank", "_blank");
+      let win;
+
+      if (mode === "cache") {
+        // Reuse cached window if it exists and not closed
+        if (cachedWin && !cachedWin.closed) {
+          win = cachedWin;
+          win.document.body.innerHTML = ""; // clear old iframe
+        } else {
+          cachedWin = window.open("about:blank", "_blank");
+          win = cachedWin;
+        }
+      } else {
+        // Always open a new window
+        win = window.open("about:blank", "_blank");
+      }
 
       // Set a temporary title while loading
       win.document.title = "Loading...";
