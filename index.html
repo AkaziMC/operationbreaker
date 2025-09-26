@@ -2,20 +2,20 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>V1.7.0</title>
+  <title>V1.7.1</title>
 </head>
 <body>
   <h1>Choose a page to open:</h1>
-  <button onclick="openPage('https://akazimc.github.io/operationbreaker/Eaglercraft')">WASM-GC Eaglercraft/button>
-  <button onclick="openPage('https://akazimc.github.io/operationbreaker/Eaglercraft-JS')">JS Eaglercraft/button>
+  <button onclick="openPage('https://akazimc.github.io/operationbreaker/Eaglercraft')">WASM-GC Eaglercraft</button>
+  <button onclick="openPage('https://akazimc.github.io/operationbreaker/Eaglercraft-JS')">JS Eaglercraft</button>
 
   <script>
     function openPage(url) {
       // Open a new blank window
       let win = window.open("about:blank", "_blank");
 
-      // Set title while loading
-      win.document.title = "Loading...";
+      // Set a temporary title while loading
+      win.document.write('<title>Loading...</title>');
 
       // Create iframe
       let iframe = win.document.createElement('iframe');
@@ -31,9 +31,6 @@
       win.document.body.style.height = '100%';
       win.document.body.style.overflow = 'hidden';
       win.document.body.appendChild(iframe);
-
-      // Update title after iframe is set
-      win.document.title = url;
     }
   </script>
 </body>
