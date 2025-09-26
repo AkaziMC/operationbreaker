@@ -2,36 +2,39 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>V3.0.5 Test Build 1</title>
+  <title>V1.7.0</title>
 </head>
 <body>
-<script>
-  // Open about:blank
-  let win = window.open("about:blank", "_blank");
+  <h1>Choose a page to open:</h1>
+  <button onclick="openPage('https://akazimc.github.io/operationbreaker/Eaglercraft')">WASM-GC Eaglercraft/button>
+  <button onclick="openPage('https://akazimc.github.io/operationbreaker/Eaglercraft-JS')">JS Eaglercraft/button>
 
-  // Website to embed (with cache-busting param)
-  let url = "https://akazimc.github.io/operationbreaker/Eaglercraft"
+  <script>
+    function openPage(url) {
+      // Open a new blank window
+      let win = window.open("about:blank", "_blank");
 
-  // Set initial title
-  win.document.title = "Loading...";
+      // Set title while loading
+      win.document.title = "Loading...";
 
-  // Create iframe safely using DOM
-  let iframe = win.document.createElement('iframe');
-  iframe.src = url;
-  iframe.style.border = 'none';
-  iframe.style.width = '100%';
-  iframe.style.height = '100%';
+      // Create iframe
+      let iframe = win.document.createElement('iframe');
+      iframe.src = url;
+      iframe.style.border = 'none';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
 
-  // Clear body and append iframe
-  win.document.body.innerHTML = '';
-  win.document.body.style.margin = '0';
-  win.document.body.style.padding = '0';
-  win.document.body.style.height = '100%';
-  win.document.body.style.overflow = 'hidden';
-  win.document.body.appendChild(iframe);
+      // Clear body and append iframe
+      win.document.body.innerHTML = '';
+      win.document.body.style.margin = '0';
+      win.document.body.style.padding = '0';
+      win.document.body.style.height = '100%';
+      win.document.body.style.overflow = 'hidden';
+      win.document.body.appendChild(iframe);
 
-  // Update title
-  win.document.title = "about:blank";
-</script>
+      // Update title after iframe is set
+      win.document.title = url;
+    }
+  </script>
 </body>
 </html>
